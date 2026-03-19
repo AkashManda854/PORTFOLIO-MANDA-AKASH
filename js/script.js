@@ -4,6 +4,11 @@
    =================================================== */
 'use strict';
 
+// ─── CONSTANTS ───────────────────────────────────────────────────────────────
+const PRELOADER_DELAY  = 1600;  // ms — slightly after loader bar fills (1400ms CSS)
+const GLITCH_DURATION  = 220;   // ms — glitch animation length
+const GLITCH_INTERVAL  = 9000;  // ms — periodic glitch interval
+
 // ─── PRELOADER ────────────────────────────────────────────────────────────────
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
@@ -13,7 +18,7 @@ window.addEventListener('load', () => {
       document.body.style.overflow = '';
       // Trigger GSAP hero entrance after preloader
       initHeroEntrance();
-    }, 1500);
+    }, PRELOADER_DELAY);
   }
 });
 document.body.style.overflow = 'hidden';
@@ -217,13 +222,13 @@ const heroName = document.querySelector('.hero-name');
 if (heroName) {
   heroName.addEventListener('mouseenter', () => {
     heroName.classList.add('glitch');
-    setTimeout(() => heroName.classList.remove('glitch'), 220);
+    setTimeout(() => heroName.classList.remove('glitch'), GLITCH_DURATION);
   });
   // Also random periodic glitch
   setInterval(() => {
     heroName.classList.add('glitch');
-    setTimeout(() => heroName.classList.remove('glitch'), 220);
-  }, 9000);
+    setTimeout(() => heroName.classList.remove('glitch'), GLITCH_DURATION);
+  }, GLITCH_INTERVAL);
 }
 
 // ─── MAGNETIC BUTTONS (50px radius pull) ─────────────────────────────────────
@@ -309,6 +314,7 @@ if (backToTopBtn) {
 }
 
 // ─── SMOOTH SCROLL ───────────────────────────────────────────────────────────
+const NAV_HEIGHT = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     const href = this.getAttribute('href');
@@ -316,7 +322,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.querySelector(href);
     if (target) {
       e.preventDefault();
-      const top = target.getBoundingClientRect().top + window.scrollY - 72;
+      const top = target.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   });
