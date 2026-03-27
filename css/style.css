@@ -766,3 +766,440 @@ footer {
 
 /* --- 20. SELECTION & MISC --- */
 ::selection { background: rgba(34,211,238,0.18); color: var(--white); }
+
+/* ================================================================
+   NEW FEATURES — UI/UX Overhaul (Phase 1–5)
+   ================================================================ */
+
+/* --- THEME TOGGLE BUTTON --- */
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-glow);
+  border-radius: 8px;
+  color: var(--cyan);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  font-size: 1.1rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.theme-toggle-btn:hover {
+  background: rgba(34,211,238,0.1);
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+/* --- CORPORATE / CLEAN THEME --- */
+html.theme-corporate {
+  --bg: #f0f4f8;
+  --bg-secondary: #e2e8f0;
+  --bg-card: rgba(255,255,255,0.92);
+  --cyan: #0ea5e9;
+  --violet: #7c3aed;
+  --neutral: #475569;
+  --white: #0f172a;
+  --border-glow: rgba(14,165,233,0.22);
+  --border-violet: rgba(124,58,237,0.22);
+  --glow-cyan: 0 0 24px rgba(14,165,233,0.18);
+  --glow-violet: 0 0 24px rgba(124,58,237,0.18);
+}
+html.theme-corporate body {
+  background-color: var(--bg);
+  color: var(--neutral);
+}
+html.theme-corporate #navbar {
+  background: rgba(240,244,248,0.88);
+  border-bottom: 1px solid rgba(14,165,233,0.12);
+}
+html.theme-corporate #particles-canvas { opacity: 0.25; }
+html.theme-corporate .hero-bg { opacity: 0.18; }
+html.theme-corporate .bento-card,
+html.theme-corporate .project-card,
+html.theme-corporate .cert-card,
+html.theme-corporate .contact-form-wrapper {
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(14,165,233,0.18);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+html.theme-corporate .skill-bar-track { background: rgba(14,165,233,0.1); }
+html.theme-corporate .loader-text,
+html.theme-corporate .section-label { color: var(--neutral); }
+
+/* --- HERO 3D CANVAS --- */
+#hero-3d-canvas {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+@media (max-width: 900px) { #hero-3d-canvas { display: none; } }
+
+/* --- HORIZONTAL TIMELINE (Phase 1 — ScrollTrigger) --- */
+.timeline-h-outer {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.timeline-h-track {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0 2rem;
+  width: max-content;
+  will-change: transform;
+}
+.timeline-h-card {
+  width: 340px;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  padding: 2rem 1.75rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.timeline-h-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(34,211,238,0.04), rgba(167,139,250,0.04));
+  pointer-events: none;
+}
+.timeline-h-card:hover {
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+.timeline-h-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(34,211,238,0.1);
+  border: 1.5px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan);
+  font-size: 1.2rem;
+  margin-bottom: 1.25rem;
+}
+/* Horizontal scroll hint arrow */
+.timeline-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--neutral);
+  font-size: 0.78rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
+  opacity: 0.7;
+}
+.timeline-scroll-hint ion-icon { color: var(--cyan); font-size: 1rem; }
+/* Mobile: stack vertically */
+@media (max-width: 900px) {
+  .timeline-h-outer { overflow: visible; }
+  .timeline-h-track {
+    flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+    padding: 0;
+  }
+  .timeline-h-card { width: 100%; }
+  .timeline-scroll-hint { display: none; }
+}
+
+/* --- INTERACTIVE TERMINAL (Phase 3) --- */
+.terminal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 14, 28, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: termFadeIn 0.25s ease;
+}
+.terminal-overlay[hidden] { display: none; }
+@keyframes termFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.terminal-window {
+  background: rgba(10, 20, 38, 0.97);
+  border: 1px solid rgba(34,211,238,0.3);
+  border-radius: 14px;
+  width: min(720px, 100%);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 60px rgba(34,211,238,0.12), 0 24px 80px rgba(0,0,0,0.6);
+  overflow: hidden;
+  animation: termSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes termSlideUp { from { transform: translateY(40px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(30,41,59,0.9);
+  border-bottom: 1px solid rgba(34,211,238,0.1);
+  flex-shrink: 0;
+}
+.terminal-dots { display: flex; gap: 6px; }
+.t-dot { width: 13px; height: 13px; border-radius: 50%; }
+.t-dot-red    { background: #ff5f57; }
+.t-dot-yellow { background: #febc2e; }
+.t-dot-green  { background: #28c840; cursor: pointer; }
+.t-dot-green:hover { filter: brightness(1.2); }
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.78rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--neutral);
+  letter-spacing: 0.04em;
+}
+.terminal-close-btn {
+  background: none;
+  border: none;
+  color: var(--neutral);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.terminal-close-btn:hover { color: #ff5f57; }
+
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.25rem 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.83rem;
+  line-height: 1.75;
+  color: #cbd5e1;
+  min-height: 200px;
+  max-height: 400px;
+  scroll-behavior: smooth;
+}
+.terminal-body::-webkit-scrollbar { width: 4px; }
+.terminal-body::-webkit-scrollbar-thumb { background: rgba(34,211,238,0.3); border-radius: 2px; }
+
+.t-line { display: block; margin-bottom: 0.2rem; }
+.t-welcome { color: var(--cyan); font-weight: 600; margin-bottom: 0.5rem; }
+.t-cmd { color: var(--violet); font-weight: 600; }
+.t-error { color: #f87171; }
+.t-echo-cmd { color: var(--cyan); opacity: 0.8; }
+
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid rgba(34,211,238,0.1);
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.t-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.83rem;
+  color: var(--cyan);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.terminal-input-field {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #f1f5f9;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.83rem;
+  caret-color: var(--cyan);
+}
+
+/* --- KONAMI / HACKER FLASH (Phase 3) --- */
+.hacker-flash {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 255, 80, 0.04);
+  z-index: 20000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: hackerPulse 0.4s ease-out;
+}
+.hacker-flash[hidden] { display: none; }
+@keyframes hackerPulse {
+  0%   { opacity: 0; transform: scale(0.92); }
+  40%  { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.hacker-flash-inner { text-align: center; }
+.hacker-flash-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.2rem, 1.2rem + 2vw, 2.5rem);
+  font-weight: 700;
+  color: #00ff50;
+  text-shadow: 0 0 30px #00ff50, 0 0 60px rgba(0,255,80,0.5);
+  letter-spacing: 0.08em;
+  animation: glitchText 0.5s ease-out;
+}
+.hacker-flash-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: rgba(0,255,80,0.7);
+  margin-top: 0.75rem;
+  letter-spacing: 0.06em;
+}
+@keyframes glitchText {
+  0%   { clip-path: inset(0 0 100% 0); transform: translateX(-4px); }
+  25%  { clip-path: inset(0 0 50% 0);  transform: translateX(4px); }
+  50%  { clip-path: inset(0 0 20% 0);  transform: translateX(-2px); }
+  100% { clip-path: inset(0 0 0 0);    transform: none; }
+}
+
+/* --- ENHANCED CURSOR — VIEW label on project cards (Phase 4) --- */
+.cursor-view-label {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--bg);
+  background: var(--cyan);
+  border-radius: 20px;
+  padding: 3px 8px;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
+  opacity: 0;
+  white-space: nowrap;
+}
+.cursor-view-label.visible {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* --- GITHUB ACTIVITY BAR (Phase 5) --- */
+.gh-activity-bar {
+  border-top: 1px solid rgba(34,211,238,0.1);
+  padding: 1.25rem 0 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+.gh-activity-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--cyan);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+}
+.gh-activity-label ion-icon { font-size: 1rem; }
+.gh-activity-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.gh-commit-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: rgba(34,211,238,0.05);
+  border: 1px solid rgba(34,211,238,0.1);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  min-width: 220px;
+  flex: 1;
+  max-width: 340px;
+  transition: border-color 0.25s;
+}
+.gh-commit-card:hover { border-color: rgba(34,211,238,0.3); }
+.gh-commit-dot {
+  color: var(--cyan);
+  font-size: 0.6rem;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.gh-commit-msg {
+  font-size: 0.78rem;
+  color: var(--white);
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.gh-commit-meta {
+  font-size: 0.68rem;
+  color: var(--neutral);
+  margin-top: 2px;
+}
+.gh-loading, .gh-empty {
+  font-size: 0.78rem;
+  color: var(--neutral);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.7;
+}
+
+/* --- FOOTER HINT --- */
+.footer-hint {
+  font-size: 0.72rem;
+  color: var(--neutral);
+  opacity: 0.5;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.footer-hint kbd {
+  display: inline-block;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: inherit;
+  font-size: 0.72rem;
+}
+
+/* Hacker mode body override (brief) */
+body.hacker-mode {
+  --bg: #000a00;
+  --cyan: #00ff50;
+  --violet: #00ee40;
+  --neutral: #00cc40;
+  animation: hackerModeFlash 2.5s ease-out forwards;
+}
+@keyframes hackerModeFlash {
+  0%   { filter: hue-rotate(0deg) brightness(1.3); }
+  50%  { filter: hue-rotate(10deg) brightness(1.1); }
+  100% { filter: none; }
+}
+
+/* Respect prefers-reduced-motion for the hacker flash */
+@media (prefers-reduced-motion: reduce) {
+  .hacker-flash { animation: none; }
+  .hacker-flash-text { animation: none; }
+  body.hacker-mode { animation: none; }
+  @keyframes hackerPulse { from { opacity: 1; } to { opacity: 0; } }
+}

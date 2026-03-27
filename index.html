@@ -45,6 +45,8 @@
 
   <!-- ── GSAP ── -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- ── GSAP ScrollTrigger ── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
 
   <!-- ── Custom Stylesheet ── -->
   <link rel="stylesheet" href="css/style.css" />
@@ -111,6 +113,11 @@
       <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
+
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Switch theme" title="Toggle Corporate / Cyber theme">
+        <ion-icon name="sunny-outline" id="theme-icon" aria-hidden="true"></ion-icon>
+      </button>
     </div>
   </nav>
 
@@ -118,6 +125,9 @@
        A. HERO SECTION
        ════════════════════════════════════════════════════ -->
   <section id="hero" aria-label="Hero introduction">
+
+    <!-- Three.js interactive 3D neural-network canvas (desktop only, lazy-loaded) -->
+    <canvas id="hero-3d-canvas" aria-hidden="true"></canvas>
 
     <!-- SVG Cyberpunk Geometric Background -->
     <div class="hero-bg" aria-hidden="true">
@@ -596,14 +606,21 @@
         <div class="section-divider"></div>
       </div>
 
-      <div class="timeline">
+      <!-- Scroll hint (hidden on mobile via CSS) -->
+      <div class="timeline-scroll-hint">
+        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+        <span>SCROLL TO EXPLORE JOURNEY</span>
+      </div>
 
-        <!-- Item 1: AICTE Internship -->
-        <div class="timeline-item">
-          <div class="timeline-dot">
-            <ion-icon name="briefcase-outline" aria-hidden="true"></ion-icon>
-          </div>
-          <div class="timeline-content">
+      <!-- Horizontal pinned timeline (GSAP ScrollTrigger) -->
+      <div class="timeline-h-outer" id="timeline-h-outer">
+        <div class="timeline-h-track" id="timeline-h-track">
+
+          <!-- Card 1: AICTE Internship -->
+          <div class="timeline-h-card">
+            <div class="timeline-h-dot">
+              <ion-icon name="briefcase-outline" aria-hidden="true"></ion-icon>
+            </div>
             <p class="timeline-date">2024 · Summer Internship</p>
             <h3 class="timeline-role">Emerging Technologies Intern</h3>
             <p class="timeline-org">AICTE (All India Council for Technical Education)</p>
@@ -619,21 +636,19 @@
               <span class="skill-tag tag-violet">Cybersecurity</span>
             </div>
           </div>
-        </div>
 
-        <!-- Item 2: Final Year Project -->
-        <div class="timeline-item">
-          <div class="timeline-dot">
-            <ion-icon name="shield-outline" aria-hidden="true"></ion-icon>
-          </div>
-          <div class="timeline-content">
+          <!-- Card 2: Final Year Project -->
+          <div class="timeline-h-card">
+            <div class="timeline-h-dot">
+              <ion-icon name="shield-outline" aria-hidden="true"></ion-icon>
+            </div>
             <p class="timeline-date">2024–2025 · Final Year Project</p>
             <h3 class="timeline-role">Cybersecurity Research Project</h3>
             <p class="timeline-org">BIET – Bharat Institute of Engineering &amp; Technology</p>
             <p class="timeline-desc">
               Designed and developed an AI-driven threat detection system as the final year capstone.
               The system leverages machine learning to identify anomalous network behaviour and classify
-              cyber attacks with high precision, aligning with real-world SOC (Security Operations Centre) workflows.
+              cyber attacks with high precision, aligning with real-world SOC workflows.
             </p>
             <div class="timeline-tags">
               <span class="skill-tag tag-violet">TensorFlow</span>
@@ -642,14 +657,12 @@
               <span class="skill-tag tag-cyan">Research</span>
             </div>
           </div>
-        </div>
 
-        <!-- Item 3: TCS CodeVita -->
-        <div class="timeline-item">
-          <div class="timeline-dot">
-            <ion-icon name="trophy-outline" aria-hidden="true"></ion-icon>
-          </div>
-          <div class="timeline-content">
+          <!-- Card 3: TCS CodeVita -->
+          <div class="timeline-h-card">
+            <div class="timeline-h-dot">
+              <ion-icon name="trophy-outline" aria-hidden="true"></ion-icon>
+            </div>
             <p class="timeline-date">2024 · Competition</p>
             <h3 class="timeline-role">Competitive Programmer</h3>
             <p class="timeline-org">TCS CodeVita — National Programming Contest</p>
@@ -664,14 +677,12 @@
               <span class="skill-tag tag-violet">Algorithms</span>
             </div>
           </div>
-        </div>
 
-        <!-- Item 4: B.Tech -->
-        <div class="timeline-item">
-          <div class="timeline-dot">
-            <ion-icon name="school-outline" aria-hidden="true"></ion-icon>
-          </div>
-          <div class="timeline-content">
+          <!-- Card 4: B.Tech -->
+          <div class="timeline-h-card">
+            <div class="timeline-h-dot">
+              <ion-icon name="school-outline" aria-hidden="true"></ion-icon>
+            </div>
             <p class="timeline-date">2021–2025 · Education</p>
             <h3 class="timeline-role">B.Tech – Computer Science &amp; Engineering</h3>
             <p class="timeline-org">BIET – Bharat Institute of Engineering &amp; Technology, Hyderabad</p>
@@ -687,9 +698,9 @@
               <span class="skill-tag tag-violet">OS</span>
             </div>
           </div>
-        </div>
 
-      </div><!-- /timeline -->
+        </div><!-- /timeline-h-track -->
+      </div><!-- /timeline-h-outer -->
 
       <!-- Certifications -->
       <div style="margin-top:4rem;">
@@ -831,6 +842,17 @@
        ════════════════════════════════════════════════════ -->
   <footer>
     <div class="footer-inner">
+      <!-- GitHub Live Activity -->
+      <div class="gh-activity-bar" id="gh-activity-bar">
+        <div class="gh-activity-label">
+          <ion-icon name="logo-github" aria-hidden="true"></ion-icon>
+          <span>Latest GitHub Activity</span>
+        </div>
+        <div class="gh-activity-items" id="github-activity">
+          <span class="gh-loading">Loading…</span>
+        </div>
+      </div>
+
       <p class="footer-copy">
         © 2025 <span>Akash Manda</span> · Built with 🛡️ Cyber-Minimalism &amp; Precision
       </p>
@@ -845,6 +867,10 @@
           <ion-icon name="mail-outline" aria-hidden="true"></ion-icon>
         </a>
       </div>
+      <p class="footer-hint">
+        <kbd>`</kbd> or <kbd>Ctrl+Alt+T</kbd> to open terminal &nbsp;·&nbsp;
+        <span style="opacity:0.4">↑↑↓↓←→←→BA for a surprise</span>
+      </p>
     </div>
   </footer>
 
@@ -852,6 +878,40 @@
   <button id="back-to-top" aria-label="Scroll back to top">
     <ion-icon name="chevron-up-outline" aria-hidden="true"></ion-icon>
   </button>
+
+  <!-- ════════════════════════════════════════════════════
+       INTERACTIVE TERMINAL EASTER EGG
+       Trigger: backtick (`) or Ctrl+Alt+T
+       ════════════════════════════════════════════════════ -->
+  <div id="terminal-overlay" class="terminal-overlay" role="dialog" aria-modal="true" aria-label="Interactive Terminal" hidden>
+    <div class="terminal-window" id="terminal-window">
+      <div class="terminal-titlebar">
+        <div class="terminal-dots">
+          <span class="t-dot t-dot-red"></span>
+          <span class="t-dot t-dot-yellow"></span>
+          <span class="t-dot t-dot-green"></span>
+        </div>
+        <span class="terminal-title">akash@portfolio:~$</span>
+        <button class="terminal-close-btn" id="terminal-close" aria-label="Close terminal">✕</button>
+      </div>
+      <div class="terminal-body" id="terminal-output">
+        <p class="t-line t-welcome">Akash Manda Portfolio Terminal v1.0.0 — <span style="color:var(--cyan)">secure shell</span></p>
+        <p class="t-line">Type <span class="t-cmd">help</span> to see available commands.</p>
+      </div>
+      <div class="terminal-input-row">
+        <span class="t-prompt">akash@portfolio:~$&nbsp;</span>
+        <input type="text" id="terminal-input" class="terminal-input-field" autocomplete="off" spellcheck="false" aria-label="Terminal command input" placeholder="type a command…" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Konami / Hacker Mode flash overlay -->
+  <div id="hacker-flash" class="hacker-flash" aria-hidden="true" hidden>
+    <div class="hacker-flash-inner">
+      <div class="hacker-flash-text">// HACKER MODE ACTIVATED //</div>
+      <div class="hacker-flash-sub">↑↑↓↓←→←→BA — nice moves, Akash.</div>
+    </div>
+  </div>
 
   <!-- ── AOS ── -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
