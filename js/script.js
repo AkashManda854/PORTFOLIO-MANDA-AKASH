@@ -32,6 +32,7 @@ function initHeroEntrance() {
     .from('.hero-tagline',  { y: 30, opacity: 0, duration: 0.7 }, '-=0.5')
     .from('.hero-desc',     { y: 24, opacity: 0, duration: 0.6 }, '-=0.5')
     .from('.btn-group',     { y: 20, opacity: 0, duration: 0.6 }, '-=0.4')
+    .from('.hero-socials',  { y: 16, opacity: 0, duration: 0.5 }, '-=0.35')
     .from('.hero-scroll-hint', { y: 16, opacity: 0, duration: 0.5 }, '-=0.3');
 }
 
@@ -367,10 +368,9 @@ if (contactForm) {
 
 // ─── DOWNLOAD RESUME FEEDBACK ────────────────────────────────────────────────
 document.querySelectorAll('.download-resume').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
+  btn.addEventListener('click', () => {
     const orig = btn.innerHTML;
-    btn.innerHTML = '✅ Downloaded!';
+    btn.innerHTML = '<ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon> Opening CV…';
     setTimeout(() => { btn.innerHTML = orig; }, 2200);
   });
 });
