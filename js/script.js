@@ -367,6 +367,7 @@ if (contactForm) {
 }
 
 // ─── DOWNLOAD RESUME FEEDBACK ────────────────────────────────────────────────
+// Update the href on the .download-resume button to point to your actual CV PDF.
 document.querySelectorAll('.download-resume').forEach(btn => {
   btn.addEventListener('click', () => {
     const orig = btn.innerHTML;
